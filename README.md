@@ -1,6 +1,6 @@
-# MediTrack — Medication Adherence Intelligence Platform
+# Team Synergy — MediTrack (Medication Adherence Intelligence Platform)
 
-> **A modern, accessible, full-stack healthcare web application for chronic care patients and authorized caregivers.**
+> **Medication Adherence Intelligence Platform for chronic patients and authorized caregivers.**
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-18+-61DAFB?style=flat&logo=react&logoColor=black)](https://reactjs.org/)
