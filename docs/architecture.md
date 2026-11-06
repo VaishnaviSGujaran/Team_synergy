@@ -119,3 +119,4 @@ $$\text{Adherence \%} = \frac{\text{Taken Doses}}{\text{Expected Doses}} \times 
 
 ### Safety Protocols:
 MediTrack suggestions are strictly limited to behavioral timing adjustments (e.g. "Consider moving reminder 30 minutes earlier to align with dinner"). The system **never** modifies dosages, never prescribes, and never provides clinical medical diagnosis.
+

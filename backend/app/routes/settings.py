@@ -56,3 +56,4 @@ def update_reminder_settings(
     db.commit()
     db.refresh(settings)
     return settings
+

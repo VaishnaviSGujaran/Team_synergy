@@ -221,3 +221,4 @@ def seed_initial_data(db: Session):
     db.add_all(dose_records)
     db.commit()
     print("Seed complete: Vaishnavi (patient), Rajesh (caregiver), and Dr. Mitchell (admin) ready.")
+

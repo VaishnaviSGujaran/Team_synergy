@@ -238,3 +238,4 @@ def calculate_adherence_analytics(db: Session, user_id: str, days: int = 14) -> 
         "suggestions": suggestions,
         "disclaimer": SAFETY_DISCLAIMER
     }
+

@@ -21,7 +21,17 @@ import ReminderModal from "../components/ReminderModal";
 
 export default function PatientDashboard() {
   const { user } = useAuth();
-  const { triggerReminder, confirmDoseTaken, snoozeDose, markDoseMissed } = useReminder();
+  const {
+    triggerReminder,
+    triggerTestReminderFlow,
+    confirmDoseTaken,
+    snoozeDose,
+    markDoseMissed,
+    alertsEnabled,
+    enableAlerts,
+    notificationsPermission,
+    isAudioBlocked,
+  } = useReminder();
 
   const [todayData, setTodayData] = useState(null);
   const [analytics, setAnalytics] = useState(null);
@@ -143,19 +153,61 @@ export default function PatientDashboard() {
             <span>Add Medication</span>
           </Link>
           <button
-            onClick={() => {
-              const pendingDose = doses.find((d) => d.status === "PENDING") || doses[0];
-              if (pendingDose) {
-                triggerReminder(pendingDose);
-              }
+            onClick={async () => {
+              await triggerTestReminderFlow();
             }}
-            className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/20 backdrop-blur-md transition-colors"
+            className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/20 backdrop-blur-md transition-colors shadow-sm"
           >
-            <Bell className="w-4 h-4 text-teal-300" />
-            <span>Test Reminder Alert</span>
+            <Bell className="w-4 h-4 text-teal-300 animate-pulse" />
+            <span>Trigger Test Medication Reminder</span>
           </button>
         </div>
       </div>
+
+      {/* Enable Medication Alerts Banner (Section 13) */}
+      {!alertsEnabled || notificationsPermission !== "granted" ? (
+        <div className="bg-gradient-to-r from-teal-50 to-emerald-50 border-2 border-teal-300 rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-start space-x-3.5">
+            <div className="p-3 bg-teal-600 text-white rounded-2xl shadow-md flex-shrink-0">
+              <Bell className="w-6 h-6 animate-bounce" />
+            </div>
+            <div>
+              <h2 className="text-base font-extrabold text-teal-950">
+                Never miss an important medication reminder
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+                Enable notifications and alarm sounds to receive medication alerts at the scheduled time.
+              </p>
+              {isAudioBlocked && (
+                <p className="text-xs font-semibold text-amber-700 mt-1">
+                  ⚠️ Audio autoplay is currently restricted by your browser. Click below to allow loud alarms.
+                </p>
+              )}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={enableAlerts}
+            className="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-sm rounded-xl shadow-md shadow-teal-600/30 transition-all self-start sm:self-auto whitespace-nowrap"
+          >
+            Enable Medication Alerts
+          </button>
+        </div>
+      ) : (
+        <div className="bg-emerald-50 border border-emerald-200 px-4 py-2.5 rounded-2xl flex items-center justify-between text-xs text-emerald-900 shadow-2xs">
+          <div className="flex items-center space-x-2 font-bold">
+            <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
+            <span>✓ Medication alerts enabled (Loud repeating alarm + Browser notifications active)</span>
+          </div>
+          <button
+            onClick={enableAlerts}
+            className="text-[11px] font-semibold text-emerald-700 underline hover:text-emerald-900"
+          >
+            Re-verify Permissions
+          </button>
+        </div>
+      )}
 
       {/* Metrics Row: Adherence Percentage & Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -403,3 +455,4 @@ export default function PatientDashboard() {
     </div>
   );
 }
+

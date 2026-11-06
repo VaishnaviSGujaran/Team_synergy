@@ -181,6 +181,27 @@ JWT_SECRET=your_super_secret_jwt_key_here
 
 ---
 
-## 8. Medical Safety Disclaimer
+## 8. Medication Alarm & Notifications
+
+MediTrack incorporates an accessible audio-visual alert engine that guarantees patient notification without inducing alert fatigue.
+
+### Core Alert Capabilities
+- **Loud Medication Alarm:** Continuous looping chime (`frontend/public/sounds/medication-alarm.mp3` with Web Audio API synthesizer fallback) triggered at scheduled dose times.
+- **Browser Desktop Notifications:** Rich native notifications showing medicine name, dosage, and scheduled time. Clicking the notification focuses the tab and surfaces the dose confirmation modal.
+- **Explicit Confirmation:** Reminders never assume intake. The dose status is updated only after the patient selects **✓ Taken**, **↻ Snooze**, or **✕ Missed**.
+- **Snooze Engine:** Postpones the alert by 10, 20, or 30 minutes, stopping the audio loop and re-alerting once the snooze duration has passed.
+- **Quiet Hours Protection:** Silences loud audio alarms during patient-configured sleep hours (default: `10:00 PM – 7:00 AM`) while maintaining silent visual notices.
+- **Interactive Test Alarm & Test Reminders:** Evaluators can click **Test Alarm** in Settings or **Trigger Test Medication Reminder** on the Patient Dashboard to test the full lifecycle in seconds.
+
+### Browser Audio & Background Limitations
+
+> [!NOTE]
+> **Browser Security & Autoplay Policies:** Modern browsers (Chrome, Edge, Firefox, Safari) restrict automatic audio playback until the user interacts with the page (click or keypress). MediTrack detects autoplay blocks gracefully and displays an accessible **Enable Medication Alerts** button to unlock audio context.
+>
+> **Background Tab & Closed Browser Limitations:** Web browsers throttle timers (`setInterval`) in background tabs to save battery. A standard web application cannot guarantee audio playback when the browser is completely closed. Native mobile apps or Web Push with Service Worker background synchronization are required for closed-browser notifications.
+
+---
+
+## 9. Medical Safety Disclaimer
 
 > **MediTrack is a medication management and adherence support platform. It does not provide medical diagnosis, prescribe medications, change treatment plans, or replace professional medical advice. Medication information should be based on prescriptions provided by qualified healthcare professionals.**

@@ -18,3 +18,4 @@ def get_analytics(
     Includes strict medical safety disclaimer and safeguards.
     """
     return calculate_adherence_analytics(db, current_user.id, days=days)
+

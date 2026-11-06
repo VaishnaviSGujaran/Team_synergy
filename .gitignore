@@ -38,6 +38,7 @@ yarn-error.log*
 # IDE & Editor
 .vscode/
 .idea/
+Team_synergy/
 *.suo
 *.ntvs*
 *.njsproj
@@ -48,3 +49,4 @@ yarn-error.log*
 # Test & Coverage
 coverage/
 .pytest_cache/
+

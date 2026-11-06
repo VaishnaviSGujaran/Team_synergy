@@ -6,7 +6,7 @@ import { Pill, Bell, LogOut, User as UserIcon, ShieldCheck } from "lucide-react"
 
 export default function Navbar({ onSimulateReminder }) {
   const { user, role, logout } = useAuth();
-  const { triggerReminder } = useReminder();
+  const { triggerTestReminderFlow } = useReminder();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -14,18 +14,11 @@ export default function Navbar({ onSimulateReminder }) {
     navigate("/login");
   };
 
-  const handleSimulate = () => {
+  const handleSimulate = async () => {
     if (onSimulateReminder) {
       onSimulateReminder();
     } else {
-      // Trigger sample Metformin reminder
-      triggerReminder({
-        id: "demo_simulated_dose",
-        medicine_name: "Metformin",
-        dosage: "500 mg",
-        instructions: "Take after breakfast with water",
-        scheduled_time: "08:00 AM",
-      });
+      await triggerTestReminderFlow();
     }
   };
 
@@ -120,3 +113,4 @@ export default function Navbar({ onSimulateReminder }) {
     </header>
   );
 }
+

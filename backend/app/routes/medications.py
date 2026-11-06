@@ -91,3 +91,4 @@ def delete_medication(med_id: str, current_user: User = Depends(get_current_user
     db.delete(med)
     db.commit()
     return {"message": "Medication deleted successfully"}
+

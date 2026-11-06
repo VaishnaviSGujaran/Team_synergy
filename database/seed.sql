@@ -96,3 +96,4 @@ VALUES
 ('dose_d7_3', 'sch_aspirin_noon', CURRENT_DATE - INTERVAL '7 days', '13:00', 'TAKEN', CURRENT_TIMESTAMP - INTERVAL '7 days', NULL),
 ('dose_d7_4', 'sch_atorvastatin_pm', CURRENT_DATE - INTERVAL '7 days', '20:00', 'TAKEN', CURRENT_TIMESTAMP - INTERVAL '7 days', NULL)
 ON CONFLICT (id) DO NOTHING;
+

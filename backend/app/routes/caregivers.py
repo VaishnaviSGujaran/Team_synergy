@@ -219,3 +219,4 @@ def get_patient_adherence_summary(
         "suggestions": analytics["suggestions"],
         "disclaimer": SAFETY_DISCLAIMER
     }
+

@@ -125,3 +125,4 @@ class ReminderSetting(Base):
 
     # Relationships
     user = relationship("User", back_populates="reminder_settings")
+

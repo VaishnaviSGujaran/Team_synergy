@@ -125,3 +125,4 @@ CREATE TABLE reminder_settings (
 );
 
 CREATE INDEX idx_reminder_settings_user ON reminder_settings(user_id);
+

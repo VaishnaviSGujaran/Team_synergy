@@ -1,18 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../services/api";
+import { useReminder } from "../context/ReminderContext";
 import {
   Settings,
   Bell,
   Clock,
   Moon,
   Volume2,
+  VolumeX,
   CheckCircle2,
   AlertCircle,
-  ShieldCheck
+  ShieldCheck,
+  Play,
+  Square
 } from "lucide-react";
 import DisclaimerBanner from "../components/DisclaimerBanner";
 
 export default function ReminderSettingsPage() {
+  const {
+    testAlarm,
+    stopAlarm,
+    isAlarmPlaying,
+    enableAlerts,
+    alertsEnabled,
+    notificationsPermission,
+  } = useReminder();
+
   const [reminderBefore, setReminderBefore] = useState(10);
   const [reminderAfter, setReminderAfter] = useState(30);
   const [maxReminders, setMaxReminders] = useState(2);
@@ -82,7 +95,7 @@ export default function ReminderSettingsPage() {
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Reminder Settings</h1>
         <p className="text-sm text-slate-500">
-          Configure notification timing and quiet hours to prevent alert fatigue and maintain healthy sleep routines.
+          Configure notification timing, loud repeating alarm, and quiet hours to prevent alert fatigue and maintain healthy sleep routines.
         </p>
       </div>
 
@@ -100,7 +113,112 @@ export default function ReminderSettingsPage() {
         </div>
       )}
 
-      <form onSubmit={handleSave} className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+      {/* Section 12: Medication Alerts Control & Test Alarm Card */}
+      <div className="bg-gradient-to-r from-teal-800 to-slate-900 rounded-3xl p-6 sm:p-7 text-white shadow-lg space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+          <div>
+            <span className="text-[11px] font-extrabold uppercase tracking-widest text-teal-300 block">
+              Audio & Desktop Alerts
+            </span>
+            <h2 className="text-xl font-black tracking-tight mt-0.5">
+              Medication Alerts
+            </h2>
+            <p className="text-xs text-teal-100 mt-1 max-w-lg">
+              Deliver a loud repeating alarm sound and browser desktop notifications when scheduled doses become due.
+            </p>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <button
+              type="button"
+              onClick={isAlarmPlaying ? stopAlarm : testAlarm}
+              className={`inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl font-extrabold text-xs shadow-md transition-all ${
+                isAlarmPlaying
+                  ? "bg-rose-500 hover:bg-rose-600 text-white animate-pulse"
+                  : "bg-teal-500 hover:bg-teal-400 text-white"
+              }`}
+            >
+              {isAlarmPlaying ? (
+                <>
+                  <Square className="w-4 h-4 fill-white" />
+                  <span>Stop Alarm</span>
+                </>
+              ) : (
+                <>
+                  <Play className="w-4 h-4 fill-white" />
+                  <span>Test Alarm</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+          {/* Browser Notifications Toggle */}
+          <div className="bg-white/10 rounded-2xl p-4 border border-white/10 flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-white/20 rounded-xl">
+                <Bell className="w-5 h-5 text-teal-300" />
+              </div>
+              <div>
+                <span className="text-xs font-extrabold uppercase block text-white">
+                  🔔 Browser Notifications
+                </span>
+                <span className="text-[11px] text-teal-100">
+                  {notificationsPermission === "granted"
+                    ? "Status: Enabled / Active"
+                    : notificationsPermission === "denied"
+                    ? "Status: Blocked in browser"
+                    : "Status: Permission required"}
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={enableAlerts}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                notificationsPermission === "granted"
+                  ? "bg-emerald-500/30 text-emerald-200 border border-emerald-400/40"
+                  : "bg-teal-500 text-white hover:bg-teal-400 shadow-sm"
+              }`}
+            >
+              {notificationsPermission === "granted" ? "Enabled" : "Enable"}
+            </button>
+          </div>
+
+          {/* Alarm Sound Toggle */}
+          <div className="bg-white/10 rounded-2xl p-4 border border-white/10 flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-white/20 rounded-xl">
+                <Volume2 className="w-5 h-5 text-teal-300" />
+              </div>
+              <div>
+                <span className="text-xs font-extrabold uppercase block text-white">
+                  🔊 Alarm Sound
+                </span>
+                <span className="text-[11px] text-teal-100">
+                  {soundEnabled ? "Status: Enabled (Loud Repeating)" : "Status: Muted / Disabled"}
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
+                soundEnabled
+                  ? "bg-emerald-500 text-white shadow-sm"
+                  : "bg-slate-700 text-slate-300 border border-slate-600"
+              }`}
+            >
+              {soundEnabled ? "Enabled" : "Disabled"}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <form onSubmit={handleSave} className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
         {/* Timing Controls */}
         <div className="space-y-4">
           <h2 className="text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center space-x-2">
@@ -223,29 +341,6 @@ export default function ReminderSettingsPage() {
               <span className="text-[11px] text-slate-400 mt-1 block">e.g. 07:00 AM</span>
             </div>
           </div>
-        </div>
-
-        {/* Sound toggle */}
-        <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-slate-100 rounded-xl text-slate-600">
-              <Volume2 className="w-5 h-5" />
-            </div>
-            <div>
-              <span className="text-sm font-bold text-slate-900 block">Sound Notification Alerts</span>
-              <span className="text-xs text-slate-500">Play pleasant chime when a dose reminder appears</span>
-            </div>
-          </div>
-
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={soundEnabled}
-              onChange={(e) => setSoundEnabled(e.target.checked)}
-              className="sr-only peer"
-            />
-            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
-          </label>
         </div>
 
         {/* Save CTA */}

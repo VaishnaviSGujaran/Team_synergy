@@ -72,3 +72,4 @@ def get_system_activity(
         })
 
     return activities
+

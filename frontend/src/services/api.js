@@ -69,6 +69,7 @@ export const api = {
   // Doses
   getTodayDoses: () => request("/api/doses/today"),
   getWeeklyDoses: () => request("/api/doses/weekly"),
+  triggerTestReminder: () => request("/api/doses/test-reminder", { method: "POST" }),
   respondDose: (doseId, payload) =>
     request(`/api/doses/respond/${doseId}`, {
       method: "POST",
@@ -113,3 +114,4 @@ export const api = {
   getAdminUsers: () => request("/api/admin/users"),
   getAdminActivity: () => request("/api/admin/activity"),
 };
+
